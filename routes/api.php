@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::apiResource("products",ProductController::class);
 Route::group(["prefix"=>"product"],function(){
-    Route::apiResource("reviews",ReviewController::class);
+    Route::apiResource("/{product}/reviews",ReviewController::class);
 });
