@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
 use App\Http\Resources\Product\ProductCollection;
 
+
 class ProductController extends Controller
 {
     /**
@@ -38,7 +39,16 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $product=new Product;
+        $product->name=$request->name;
+        $product->detail=$request->description;
+        $product->price=$request->price;
+        $product->discount=$request->discount;
+        $product->stock=$request->stock;
+        $product->save();
+        return response([
+            "data"=>new ProductResource($product)
+        ],201);
     }
 
     /**
