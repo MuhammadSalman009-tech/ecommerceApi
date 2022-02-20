@@ -25,7 +25,6 @@ class ProductResource extends JsonResource
             "href"=>[
                 "reviews"=>route("reviews.index",$this->id)
             ],
-
         ];
     }
 }
