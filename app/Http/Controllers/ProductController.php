@@ -11,6 +11,9 @@ use App\Http\Resources\Product\ProductCollection;
 
 class ProductController extends Controller
 {
+    public function __construct(){
+        $this->middleware("auth:sanctum")->except("index","create");
+    }
     /**
      * Display a listing of the resource.
      *
@@ -82,6 +85,11 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        if($this->checkProductUser($product)){
+            return [
+                "error"=>"product not belongs to user"
+            ];
+        }
         $product["detail"]=$request->description;
         unset($request["description"]);
         $product->update($request->all());
@@ -98,6 +106,19 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if($this->checkProductUser($product)){
+            return [
+                "error"=>"product not belongs to user"
+            ];
+        }
+        $product->delete();
+        return response([
+            "data"=>null
+        ],204);
+    }
+    public function checkProductUser($product){
+        if(auth()->user()->id!==$product->user_id){
+            return true;
+        }
     }
 }
